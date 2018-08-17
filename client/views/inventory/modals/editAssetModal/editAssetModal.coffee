@@ -1,9 +1,18 @@
-fields = [ 'name', 'propertyTag', 'serialNo', 'model', 'department', 'roomNumber', 'building', 'owner' ]
+fields = [ 'name', 'propertyTag', 'serialNo', 'model', 'department', 'roomNumber', 'building', 'owner', 'shipDate' ]
 Template.editAssetModal.helpers
   item: -> Inventory.findOne(@docId)
   file: -> FileRegistry.findOne(@fileId)
   departments: -> _.map departments, (v) -> { label: v, value: v }
   formatDate: (date) -> moment(date).format('MMM D, YYYY')
+
+Template.editAssetModal.rendered = ->
+  tpl = @
+  @.$('.datepicker').datepicker({
+    endDate: "0d"
+    autoclose: true  
+    todayHighlight: true
+    orientation: "up" # up is down
+  })
 
 Template.editAssetModal.events
   'show.bs.modal': (e, tpl) ->
@@ -59,6 +68,9 @@ Template.editAssetModal.events
   'click button[data-action=checkUsername]': (e, tpl) ->
     checkUsername tpl
 
+  'click button[data-action=lookupShipDate]': (e, tpl)->
+    lookupShipDate tpl 
+
   'click button[data-action=recordNewDelivery]': (e, tpl) ->
     Blaze.renderWithData Template.pickupModal, { docId: tpl.data.docId }, $('body').get(0)
     $('#pickupModal').modal('show')
@@ -85,6 +97,17 @@ checkUsername = (tpl, winCb, failCb) ->
         tpl.$('button[data-action=checkUsername]').removeClass('btn-success').removeClass('btn-primary').addClass('btn-danger')
         tpl.$('button[data-action=checkUsername]').html('<span class="glyphicon glyphicon-remove"></span>')
         if failCb then failCb()
+
+lookupShipDate = (tpl) ->
+  modelVal = tpl.$('input[data-schema-key=model]').val()
+  serialVal = tpl.$('input[data-schema-key=serialNo]').val()
+  Meteor.call 'lookupShipDate', serialVal, modelVal, (err, res) -> 
+    if res
+      tpl.$('input[data-schema-key=shipDate]').val(moment(res).format('L'))
+      tpl.$('.datepicker').datepicker('update', moment(res).format('L'))
+    else
+      alert('Ship date could not be found.  Ship date lookup is only available for Dell devices.')
+  
 
 departments = [
   'AAAS'

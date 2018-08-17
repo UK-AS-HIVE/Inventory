@@ -1,4 +1,4 @@
-fields = [ 'serialNo', 'model', 'department', 'propertyTag', 'roomNumber', 'building', 'owner', 'name' ]
+fields = [ 'serialNo', 'model', 'department', 'propertyTag', 'roomNumber', 'building', 'owner', 'name', 'shipDate' ]
 boolFields = [ 'checkout', 'enteredIntoEbars', 'delivered', 'isPartOfReplacementCycle' ]
 
 Template.newAssetModal.onCreated ->
@@ -42,6 +42,18 @@ Template.newAssetModal.events
   'click button[data-action=checkUsername]': (e, tpl) ->
     checkUsername tpl
 
+  'click button[data-action=lookupShipDate]': (e, tpl)->
+    lookupShipDate tpl  
+
+Template.newAssetModal.rendered = ->
+  tpl = @
+  @.$('.datepicker').datepicker({
+    endDate: "0d"
+    autoclose: true
+    todayHighlight: true
+    orientation: "up" # up is down
+  })
+
 Template.newAssetModal.helpers
   departments: -> departments
   error: -> Template.instance().error.get()
@@ -57,6 +69,15 @@ Template.newAssetModal.helpers
         matchAll: true
       ]
     }
+lookupShipDate = (tpl) ->
+  modelVal = tpl.$('input[data-schema-key=model]').val()
+  serialVal = tpl.$('input[data-schema-key=serialNo]').val()
+  Meteor.call 'lookupShipDate', serialVal, modelVal, (err, res) -> 
+    if res
+      tpl.$('input[data-schema-key=shipDate]').val(moment(res).format('L'))
+      tpl.$('.datepicker').datepicker('update', moment(res).format('L'))
+    else
+      alert('Ship date could not be found.  Ship date lookup is only available for Dell devices.')
 
 
 checkUsername = (tpl, winCb, failCb) ->

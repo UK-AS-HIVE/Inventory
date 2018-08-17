@@ -76,7 +76,13 @@ Router.map ->
         filter = @params.query
         if filter.search
           filter.$text = { $search: filter.search }
-          delete filter.search
+          delete filter.search  
+        if filter.archived
+          filter.archived = true
+        else
+          filter.archived = {$ne: true}
+        if filter.isPartOfReplacementCycle
+          filter.isPartOfReplacementCycle = true
 
         # Mongo really doesn't like null filter values
         for k,v of filter
@@ -96,7 +102,10 @@ Router.map ->
             'model'
             'roomNumber'
             'building'
+            'shipDate'
             'name'
+            'isPartOfReplacementCycle'
+            'archived'
           ],
           'inventory',
           @response

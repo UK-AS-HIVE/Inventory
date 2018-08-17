@@ -32,10 +32,7 @@ class @WarrantyLookupJob extends Job
           accept: 'application/json'
           apikey: Meteor.settings.apiKeys.dellWarranty
       console.log "Got warranty info for #{item.model} (#{item.serialNo})...", res.data
-      shipDate = res.data.AssetWarrantyResponse[0].AssetHeaderData.ShipDate
-      if shipDate? then shipDate = new Date(shipDate) else shipDate = null
       Inventory.update item._id,
         $set:
           warrantyInfo: res.data
-          shipDate: shipDate
 

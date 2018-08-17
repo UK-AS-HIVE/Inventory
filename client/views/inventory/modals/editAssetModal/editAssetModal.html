@@ -33,6 +33,19 @@
                     </div>
                   </div>
 
+                  <div class="form-group">
+                    <label for="shipDate" class="control-label">Ship Date:</label>
+                    <div class="input-group">
+                      <div class="input-group date datepicker">
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+                        <input type="text" class="form-control" data-schema-key="shipDate" value={{shipDate}}> 
+                      </div> 
+                      <span class="input-group-btn">
+                        <button type="button" class="btn btn-primary" data-action="lookupShipDate">Lookup</button>
+                      </span>
+                    </div>     
+                  </div>
+
                   <!-- Attachments -->
                   <div class="panel panel-default">
                     <div class="panel-heading">Attachments</div>
@@ -50,7 +63,8 @@
                         </div>
                       {{/each}}
                     </div>
-                  </div>
+                  </div>   
+        
                   {{> afQuickField name='checkout'}}
                   {{> afQuickField name='enteredIntoEbars'}}
                   {{> afQuickField name='isPartOfReplacementCycle'}}
@@ -67,7 +81,6 @@
 
                   {{#if warrantyInfo}}
                     <div class="form-group">
-                      Ship date: {{formatDate shipDate}}
                       <button class="btn btn-primary pull-right" data-action="getWarrantyInfo">Warranty Details</button>
                     </div>
                   {{/if}}

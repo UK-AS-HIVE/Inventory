@@ -580,6 +580,10 @@ blockquote {
   vertical-align: middle;
 }
 
+.input-group.datepicker {
+  width: 100%;
+}
+
 .filter-flex-container {
   display: flex;
   justify-content: space-between;

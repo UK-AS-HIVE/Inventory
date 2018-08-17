@@ -19,6 +19,16 @@ Meteor.methods
           userId = Meteor.users.insert(userObj)
         return userId
 
+  lookupShipDate: (serialNo, model) ->
+    if model.toLowerCase().startsWith('dell ')
+      res = HTTP.get "https://sandbox.api.dell.com/support/assetinfo/v4/getassetwarranty/#{serialNo}",
+        headers:
+          accept: 'application/json'
+          apikey: Meteor.settings.apiKeys.dellWarranty
+      shipDate = res.data.AssetWarrantyResponse[0].AssetHeaderData.ShipDate
+      if shipDate? then shipDate = new Date(shipDate) else shipDate = null
+      return shipDate
+
   checkPassword: (username, password) ->
     # Check a username and password against LDAP without Meteor login.
     client = LDAP.createClient Meteor.settings.ldap.serverUrl

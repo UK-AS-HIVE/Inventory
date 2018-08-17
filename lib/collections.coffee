@@ -1,5 +1,5 @@
 SimpleSchema.messages {
-  locationOrOwnerRequired: "Either Owner or Location must be present."
+  locationOrOwnerRequired: "Either Owner or Room Number must be present."
   currentlyCheckedOut: "This item is currently checked out."
 }
 
@@ -33,24 +33,20 @@ SimpleSchema.messages {
     type: String
     optional: true
     custom: ->
-      unless @isSet or @field('building')?.isSet
+      unless @isSet or @field('roomNumber')?.isSet
         "locationOrOwnerRequired"
   roomNumber:
     type: String
     optional: true
-    label: "Room Number"
+    custom: ->
+      unless @isSet or @field('owner')?.isSet
+        "locationOrOwnerRequired"
   building:
     type: String
     optional: true
-    custom: ->
-      unless @isSet or @field('owner')?.isSet
-        "locationOrOwnerRequired"
   location:
     type: String
     optional: true
-    custom: ->
-      unless @isSet or @field('owner')?.isSet
-        "locationOrOwnerRequired"
   pictureId:
     type: String
     optional: true

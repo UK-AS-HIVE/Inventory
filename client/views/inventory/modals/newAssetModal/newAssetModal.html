@@ -11,13 +11,13 @@
           {{> addAssetQuickField name='propertyTag'}}
           {{> addAssetQuickField name='serialNo'}}
           <div class="form-group">
-            <label for="model" class="control-label">Model <span class="required">*</span></label>
+            <label for="model" class="control-label">Model<span class="required">*</span></label>
             {{> inputAutocomplete type="text" name="model" data-required=true data-schema-key="model" class="form-control" settings=modelSettings}}
           </div>
           {{> addAssetQuickField name='department' options=departments}}
           {{> addAssetQuickField name='roomNumber'}}
           <div class="form-group">
-            <label for="building" class="control-label">Building <span class="required">*</span></label>
+            <label for="building" class="control-label">Building<span class="required">*</span></label>
             {{> inputAutocomplete type="text" name="building" data-required=true data-schema-key="building" class="form-control" settings=buildingSettings}}
           </div>
           <div class="form-group">
@@ -28,6 +28,18 @@
                 <button type="button" class="btn btn-primary" data-action="checkUsername">Check</button>
               </span>
             </div>
+          </div>
+          <div class="form-group">
+            <label for="shipDate" class="control-label">Ship Date:</label>
+            <div class="input-group">
+              <div class="input-group date datepicker">
+                <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+                <input type="text" class="form-control" name="shipDate" data-schema-key="shipDate">
+              </div>  
+              <span class="input-group-btn">
+                <button type="button" class="btn btn-primary" data-action="lookupShipDate">Lookup</button>
+              </span>
+            </div>    
           </div>
           {{> addAssetQuickField name='name'}}
           {{> addAssetQuickField name='checkout'}}
