@@ -11,9 +11,7 @@ Migrations.add
 Migrations.add
   version: 2
   up: ->
-    Inventory.find().forEach (i) ->
-      Job.push new WarrantyLookupJob
-        inventoryId: i._id
+    return
 
 Migrations.add
   version: 3

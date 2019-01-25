@@ -1,9 +1,7 @@
 Meteor.startup ->
   Inventory._ensureIndex {
-    name: "text"
-    propertyTag: "text"
-    serialNo: "text"
-    model: "text"
+    keyNumber: "text"
+    keyType: "text"
     owner: "text"
     roomNumber: "text"
     building: "text"

@@ -1,1 +1,1 @@
-propertyTag,serialNo,owner,department,model,roomNumber,building,name
+owner,department,keyNumber,keyType,roomNumber,building,name

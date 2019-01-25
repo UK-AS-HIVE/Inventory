@@ -21,18 +21,3 @@ class @NotificationJob extends Job
         html: html
         headers:
           'Message-ID': makeMessageID @params.ticketId
-
-
-class @WarrantyLookupJob extends Job
-  handleJob: ->
-    item = Inventory.findOne @params.inventoryId
-    if item.model.toLowerCase().startsWith('dell ')
-      res = HTTP.get "https://sandbox.api.dell.com/support/assetinfo/v4/getassetwarranty/#{item.serialNo}",
-        headers:
-          accept: 'application/json'
-          apikey: Meteor.settings.apiKeys.dellWarranty
-      console.log "Got warranty info for #{item.model} (#{item.serialNo})...", res.data
-      Inventory.update item._id,
-        $set:
-          warrantyInfo: res.data
-

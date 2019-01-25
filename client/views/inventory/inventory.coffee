@@ -6,7 +6,7 @@ getFilters = ->
     department: Iron.query.get 'department'
     owner: Iron.query.get 'owner'
     building: Iron.query.get 'building'
-    model: Iron.query.get 'model'
+    keyType: Iron.query.get 'keyType'
     $text: { $search: Iron.query.get 'search' }
   }
   
@@ -38,9 +38,8 @@ Template.inventory.helpers
   tableSettings: ->
     fields =  [
       { key: 'badges', label: Spacebars.SafeString("<input type='checkbox' name='selectAll'>"), tpl: Template.inventoryBadges, sortable: false, class: 'hidden-xs' }
-      'propertyTag',
-      { key: 'serialNo', class: 'hidden-xs' }
-      'model',
+      'keyNumber',
+      'keyType',
       { key: 'department', class: 'hidden-xs' }
       { key: 'owner', tpl: Template.ownerField },
       'roomNumber'

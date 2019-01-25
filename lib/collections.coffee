@@ -5,28 +5,20 @@ SimpleSchema.messages {
 
 @Inventory = new Mongo.Collection 'inventory'
 @Inventory.attachSchema new SimpleSchema
-  name:
+  keyNumber:
     optional: true
     type: String
-    label: "Asset Name"
-  propertyTag:
+    label: "Key number"
+  keyType:
     type: String
-    optional: true
-    unique: true
-  deviceType:
-    type: String
-    optional: true
-  serialNo:
-    type: String
-    label: "Serial Number"
+    label: 'Key type'
+    allowedValues: ['Day key', 'Master key']
   enteredByUserId:
     type: String
     optional: true # Will be taken care of by the server.
   enteredAtTimestamp:
     type: new Date()
     optional: true # Will be taken care of by the server.
-  model:
-    type: String
   department:
     type: String
   owner:
@@ -65,13 +57,6 @@ SimpleSchema.messages {
     ]
   'attachments.$.fileId':
     type: String
-  enteredIntoEbars:
-    label: "Entered into Ebars?"
-    type: Boolean
-    defaultValue: false
-  barcode:
-    type: String
-    optional: true
   checkout:
     label: "Available for Checkout?"
     type: Boolean
@@ -105,10 +90,6 @@ SimpleSchema.messages {
     type: String
   'notes.$.enteredAtTimestamp':
     type: new Date()
-  warrantyInfo:
-    type: Object
-    blackbox: true
-    optional: true
   shipDate:
     label: "Ship Date"
     type: new Date()
@@ -291,10 +272,10 @@ Meteor.users.attachSchema new SimpleSchema
     type: Boolean
     
 
-@Models = new Mongo.Collection 'models'
-@Models.attachSchema new SimpleSchema
-  # Collection storing model names for autocompleting
-  model:
+@KeyTypes = new Mongo.Collection 'keyTypes'
+@KeyTypes.attachSchema new SimpleSchema
+  # Collection storing key types for autocompleting
+  keyType:
     type: String
   lastUse:
     type: new Date()

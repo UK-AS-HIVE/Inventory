@@ -39,7 +39,6 @@ Template.attachmentField.events
 
 Template.inventoryActionsField.helpers
   isAdmin: -> Roles.userIsInRole Meteor.userId(), 'admin'
-  delivered: -> Inventory.findOne(@documentId).delivered
 
 Template.inventoryActionsField.events
   'click button[data-toggle=modal]': (e, tpl) ->

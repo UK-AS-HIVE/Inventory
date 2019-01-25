@@ -11,10 +11,8 @@
             <div class="row">
               <div class="col-xs-12">
                 {{#autoForm collection="Inventory" id="assetForm" type="update" doc=this}}
-                  {{> afQuickField name='name'}}
-                  {{> afQuickField name='propertyTag'}}
-                  {{> afQuickField name='serialNo'}}
-                  {{> afQuickField name='model'}}
+                  {{> afQuickField name='keyNumber'}}
+                  {{> afQuickField name='keyType'}}
                   {{> afQuickField name='department' options=departments}}
                   {{> afQuickField name='roomNumber'}}
                   <div class="form-group">

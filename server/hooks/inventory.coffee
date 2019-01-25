@@ -3,7 +3,7 @@ Inventory.before.insert (userId, doc) ->
   doc.enteredAtTimestamp = now
   doc.enteredByUserId = userId
   Buildings.upsert { building: doc.building }, { $set: { lastUse: now } }
-  Models.upsert { model: doc.model }, { $set: { lastUse: now } }
+  KeyTypes.upsert { keyType: doc.keyType }, { $set: { lastUse: now } }
 
 Inventory.before.upsert (userId, selector, modifier, options) ->
   now = new Date()
@@ -11,18 +11,8 @@ Inventory.before.upsert (userId, selector, modifier, options) ->
   modifier.$setOnInsert.enteredByUserId = userId
   if modifier.$set.building?
     Buildings.upsert { building: modifier.$set.building }, { $set: { lastUse: now } }
-  if modifier.$set.model?
-    Models.upsert { model: modifier.$set.model }, { $set: { lastUse: now } }
-
-Inventory.after.insert (userId, doc) ->
-  if doc
-    Job.push new WarrantyLookupJob
-      inventoryId: doc._id
-
-Inventory.after.update (userId, doc, fieldNames, modifier, options) ->
-  if @previous.serialNo != doc.serialNo
-    Job.push new WarrantyLookupJob
-      inventoryId: doc._id
+  if modifier.$set.keyType?
+    KeyTypes.upsert { keyType: modifier.$set.keyType }, { $set: { lastUse: now } }
 
 Inventory.before.update (userId, doc, fieldNames, modifier, options) ->
   _.each fieldNames, (fn) ->

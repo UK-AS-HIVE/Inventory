@@ -12,7 +12,7 @@ findOverdueItems = ->
     console.log 'overdue'
     user = Meteor.users.findOne(c.assignedTo)
     item = Inventory.findOne(c.assetId)
-    name = item.name || item.model
+    name = item.name || item.keyType
     if item
       Email.send
         from: Meteor.settings.email.fromEmail
@@ -37,7 +37,7 @@ findDueItems = ->
     console.log 'due'
     user = Meteor.users.findOne(c.assignedTo)
     item = Inventory.findOne(c.assetId)
-    name = item.name || item.model
+    name = item.name || item.keyType
     if item
       Email.send
         from: Meteor.settings.email.fromEmail
@@ -71,7 +71,7 @@ pickupReminders = ->
   _.each checkouts, (c) ->
     item = Inventory.findOne(c.assetId)
     user = Meteor.users.findOne(c.assignedTo)
-    name = item.name || item.model # Name is preferred, but not required, so model as fallback
+    name = item.name || item.keyType # Name is preferred, but not required, so model as fallback
 
     if item
       Email.send
@@ -98,7 +98,7 @@ dueSoonReminders = ->
   _.each checkouts, (c) ->
     item = Inventory.findOne(c.assetId)
     user = Meteor.users.findOne(c.assignedTo)
-    name = item.name || item.model
+    name = item.name || item.keyType
 
     if item
       Email.send

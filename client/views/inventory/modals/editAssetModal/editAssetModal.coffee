@@ -1,4 +1,4 @@
-fields = [ 'name', 'propertyTag', 'serialNo', 'model', 'department', 'roomNumber', 'building', 'owner', 'shipDate' ]
+fields = [ 'keyNumber', 'keyType', 'department', 'roomNumber', 'building', 'owner', 'shipDate' ]
 Template.editAssetModal.helpers
   item: -> Inventory.findOne(@docId)
   file: -> FileRegistry.findOne(@fileId)
@@ -97,17 +97,6 @@ checkUsername = (tpl, winCb, failCb) ->
         tpl.$('button[data-action=checkUsername]').removeClass('btn-success').removeClass('btn-primary').addClass('btn-danger')
         tpl.$('button[data-action=checkUsername]').html('<span class="glyphicon glyphicon-remove"></span>')
         if failCb then failCb()
-
-lookupShipDate = (tpl) ->
-  modelVal = tpl.$('input[data-schema-key=model]').val()
-  serialVal = tpl.$('input[data-schema-key=serialNo]').val()
-  Meteor.call 'lookupShipDate', serialVal, modelVal, (err, res) -> 
-    if res
-      tpl.$('input[data-schema-key=shipDate]').val(moment(res).format('L'))
-      tpl.$('.datepicker').datepicker('update', moment(res).format('L'))
-    else
-      alert('Ship date could not be found.  Ship date lookup is only available for Dell devices.')
-  
 
 departments = [
   'AAAS'

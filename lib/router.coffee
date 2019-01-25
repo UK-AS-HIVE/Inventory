@@ -95,11 +95,10 @@ Router.map ->
           Inventory,
           filter,
           [
-            'propertyTag'
-            'serialNo'
             'owner'
             'department'
-            'model'
+            'keyNumber'
+            'keyType'
             'roomNumber'
             'building'
             'shipDate'

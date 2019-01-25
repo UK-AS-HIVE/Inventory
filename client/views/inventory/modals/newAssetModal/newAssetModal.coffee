@@ -1,9 +1,9 @@
-fields = [ 'serialNo', 'model', 'department', 'propertyTag', 'roomNumber', 'building', 'owner', 'name', 'shipDate' ]
-boolFields = [ 'checkout', 'enteredIntoEbars', 'delivered', 'isPartOfReplacementCycle' ]
+fields = [ 'keyNumber', 'keyType', 'department', 'roomNumber', 'building', 'owner', 'name', 'shipDate' ]
+boolFields = [ 'checkout', 'delivered', 'isPartOfReplacementCycle' ]
 
 Template.newAssetModal.onCreated ->
   @error = new ReactiveVar ""
-  @subscribe 'models'
+  @subscribe 'keyTypes'
   @subscribe 'buildings'
 
 Template.newAssetModal.events
@@ -57,28 +57,18 @@ Template.newAssetModal.rendered = ->
 Template.newAssetModal.helpers
   departments: -> departments
   error: -> Template.instance().error.get()
-  modelSettings: ->
+  keyTypeSettings: ->
     {
       position: 'bottom'
       limit: 5
       rules: [
         token: ''
-        collection: Models
-        field: 'model'
-        template: Template.modelPill
+        collection: KeyTypes
+        field: 'keyType'
+        template: Template.keyTypePill
         matchAll: true
       ]
     }
-lookupShipDate = (tpl) ->
-  modelVal = tpl.$('input[data-schema-key=model]').val()
-  serialVal = tpl.$('input[data-schema-key=serialNo]').val()
-  Meteor.call 'lookupShipDate', serialVal, modelVal, (err, res) -> 
-    if res
-      tpl.$('input[data-schema-key=shipDate]').val(moment(res).format('L'))
-      tpl.$('.datepicker').datepicker('update', moment(res).format('L'))
-    else
-      alert('Ship date could not be found.  Ship date lookup is only available for Dell devices.')
-
 
 checkUsername = (tpl, winCb, failCb) ->
   # A check username function for this template only.

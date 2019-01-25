@@ -17,4 +17,4 @@ if Meteor.isServer
     department: String
     owner: String
     building: String
-    model: String
+    keyType: String

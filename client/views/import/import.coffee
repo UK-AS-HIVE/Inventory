@@ -1,5 +1,5 @@
 # These match the export fields.
-templateKeys = [ 'propertyTag', 'serialNo', 'owner', 'department', 'model', 'roomNumber', 'building', 'name' ]
+templateKeys = [ 'owner', 'department', 'keyType', 'roomNumber', 'building', 'name' ]
 
 Template.import.onCreated ->
   @assets = new ReactiveVar []

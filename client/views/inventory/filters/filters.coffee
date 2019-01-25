@@ -25,7 +25,7 @@ Template.inventoryFilters.helpers
       { key: 'department', label: 'Department' }
       { key: 'owner', label: 'Owner' }
       { key: 'building', label: 'Building' }
-      { key: 'model', label: 'Model' }
+      { key: 'keyType', label: 'Key type' }
     ]
   value: ->
     key = @key
