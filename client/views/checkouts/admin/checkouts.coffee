@@ -27,6 +27,9 @@ inventoryFilters = ->
     if _.isUndefined(v) then delete filters[k]
   return filters
 
+Template.checkoutsAdmin.onCreated ->
+  @subscribe 'upcomingItems'
+
 Template.checkoutsAdmin.helpers
   overdueItemsCount: ->
     today = moment().hours(0).minutes(0).seconds(0).toDate()
