@@ -29,6 +29,7 @@ inventoryFilters = ->
 
 Template.checkoutsAdmin.onCreated ->
   @subscribe 'upcomingItems'
+  @subscribe 'overdueItems'
 
 Template.checkoutsAdmin.helpers
   overdueItemsCount: ->
