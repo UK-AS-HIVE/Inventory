@@ -28,29 +28,11 @@ inventoryFilters = ->
   return filters
 
 Template.checkoutsAdmin.onCreated ->
-  @subscribe 'upcomingItems'
-  @subscribe 'overdueItems'
+  @subscribe 'upcomingAndOverdueCounts'
 
 Template.checkoutsAdmin.helpers
-  overdueItemsCount: ->
-    today = moment().hours(0).minutes(0).seconds(0).toDate()
-    Checkouts.find({
-      'schedule.expectedReturn': { $lt: today }
-      'schedule.timeReturned': { $exists: false }
-      'schedule.timeCheckedOut': { $exists: true }
-    }).count()
-  upcomingItemsCount: ->
-    # Count published checkouts between yesterday and a week from today for display.
-    yesterday = moment().add(-1, 'days').hours(0).minutes(0).seconds(0).toDate()
-    weekFromNow = moment().add(7, 'days').hours(23).minutes(59).seconds(59).toDate()
-    checkoutFilter = {
-      'schedule.timeReturned': { $exists: false } # Don't count already returned items.
-      $or: [
-        'schedule.timeReserved': { $gte: yesterday, $lte: weekFromNow }
-        'schedule.expectedReturn': { $gte: yesterday, $lte: weekFromNow }
-      ]
-    }
-    Checkouts.find(checkoutFilter).count()
+  overdueItemsCount: -> Counts.get 'overdueCount'
+  upcomingItemsCount: -> Counts.get 'upcomingCount'
   settings: ->
     {
       fields: ['name', 'model',

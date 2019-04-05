@@ -177,6 +177,30 @@ Meteor.publish 'item', (itemId) ->
   else if Inventory.findOne(itemId).owner is Meteor.users.findOne(@userId).username
     Inventory.find { _id: itemId }
 
+Meteor.publish 'upcomingAndOverdueCounts', ->
+  yesterday = moment().add(-1, 'days').hours(0).minutes(0).seconds(0).toDate()
+  weekFromNow = moment().add(7, 'days').hours(23).minutes(59).seconds(59).toDate()
+  upcomingCursor = Checkouts.find({
+    'schedule.timeReturned': { $exists: false } # Don't count already returned items.
+    $or: [
+      'schedule.timeReserved': { $gte: yesterday, $lte: weekFromNow }
+      'schedule.expectedReturn': { $gte: yesterday, $lte: weekFromNow }
+    ]
+  })
+  Counts.publish this, 'upcomingCount', upcomingCursor, {noReady: true}
+
+  today = moment().hours(0).minutes(0).seconds(0).toDate()
+  overdueCursor = Checkouts.find({
+    'schedule.expectedReturn': { $lt: today }
+    'schedule.timeReturned': { $exists: false }
+    'schedule.timeCheckedOut': { $exists: true }
+  })
+  Counts.publish this, 'overdueCount', overdueCursor, {noReady: true}
+
+  return []
+
+
+
 Meteor.publishComposite 'upcomingItems', ->
   # Publish checkouts that are either expected to be picked up between yesterday and next week, or returned in the same time frame.
   yesterday = moment().add(-1, 'days').hours(0).minutes(0).seconds(0).toDate()
