@@ -1,0 +1,33 @@
+<template name="consumableUpdateModalAdmin">
+  <div class="modal fade" id="consumableUpdateModalAdmin">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 class="modal-title">Update Supply</h4>
+        </div>
+        <div class="modal-body">
+          <span class="error">{{error}}</span>
+          <div class="form-group">
+            <label for="itemName" class="control-label">
+              Item<span class="required">*</span>
+            </label>
+            <input type="text" name="itemName" data-required="true" data-schema-key="itemName" class="form-control" value="{{currentValue.itemName}}">
+          </div>
+          <div class="form-group">
+            <label for="currentStock" class="control-label">
+              Current Stock<span class="required">*</span>
+            </label>
+            <input type="text" name="currentStock" data-required="true" data-schema-key="currentStock" class="form-control" value="{{currentValue.currentStock}}">
+          </div>
+          <button type="button" data-modal="assetHistoryModal" data-toggle="modal" class="btn btn-sm btn-default hidden-xs">View History</button>
+        </div>
+        <div class="modal-footer">
+          <button type="button" data-action="submit" name="update" class="btn btn-primary pull-left">Update</button>
+          <button type="button" data-action="submit" name="cancel" data-dismiss="modal" class="btn btn-primary">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+

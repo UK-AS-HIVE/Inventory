@@ -24,3 +24,11 @@ Checkouts.allow
 
     true
   remove: -> false
+
+Consumables.allow
+  insert: (userId, doc) ->
+    Roles.userIsInRole(userId, 'admin')
+  update: (userId, doc, fields, modifier) ->
+    Roles.userIsInRole(userId, 'admin')
+  remove: -> false
+

@@ -37,6 +37,10 @@ Router.map ->
     path: '/checkouts/overdue'
     template: 'overdue'
 
+  @route 'consumables',
+    path: '/consumables'
+    template: 'consumables'
+
   @route 'import',
     path: '/import'
     template: 'import'

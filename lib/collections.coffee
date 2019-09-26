@@ -305,3 +305,13 @@ Meteor.users.attachSchema new SimpleSchema
     type: String
   lastUse:
     type: new Date()
+
+@Consumables = new Mongo.Collection 'consumables'
+@Consumables.attachSchema new SimpleSchema
+  itemName:
+    type: String
+    unique: true
+  currentStock:
+    type: Number
+    decimal: true
+    min: 0

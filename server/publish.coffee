@@ -1,8 +1,20 @@
+
 Meteor.publish 'userData', ->
   Meteor.users.find {_id: @userId}
 
 Meteor.publish 'allUserData', ->
   Meteor.users.find {}, {fields: {'_id': 1, 'username': 1, 'mail': 1, 'displayName': 1, 'department': 1, 'physicalDeliveryOfficeName': 1, 'status.online': 1, 'status.idle': 1}}
+
+Meteor.publish 'consumables', (filter, sortKey, sortDir, page) ->
+  return Consumables.find()
+  unless Roles.userIsInRole @userId, 'admin'
+    throw new Meteor.Error(403, "Only admins may access consumables")
+
+  sort = {}
+  sort[sortKey] = sortDir
+  skip = 20*page
+  Counts.publish this, 'consumablesCount', Consumables.find(filter)
+  Consumables.find(filter, {sort: sort, skip: skip, limit: 20})
 
 Meteor.publishComposite 'inventory', (filter, options) ->
   filter = filter || {}

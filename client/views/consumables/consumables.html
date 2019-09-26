@@ -1,0 +1,72 @@
+<template name="consumables">
+  <div class="row col-md-12">
+    <div class="col-md-12">
+      {{#if admin}}
+        <button type="button" class="btn btn-primary" data-action="addNewConsumable">Add New Consumable</button>
+      {{/if}}
+    </div>
+  </div>
+
+  {{#if pageLimit}}
+      <div class="row">
+        <div class="col-md-12">
+          <div class="pull-right">
+            <strong>{{firstVisibleItem}}-{{lastVisibleItem}}</strong> of <strong>{{itemCount}}</strong>
+            <div class="btn-group">
+              <button type="button" class="btn btn-default" data-action="lastPage" {{lastDisabled}}><span class="glyphicon glyphicon-chevron-left"></span></button>
+              <button type="button" class="btn btn-default" data-action="nextPage" {{nextDisabled}}><span class="glyphicon glyphicon-chevron-right"></span></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    {{/if}}
+    <table class="autotable table table-condensed">
+      <thead>
+        <tr>
+          {{#each fields}}
+            <th class="{{class}}">
+              {{#if sortable}}
+                <span class="inventory-table-heading" data-sort-key="{{key}}">
+                  {{{label}}} &nbsp;
+                  {{#if isSortKey}} {{#if isAscending}}
+                      <span class="glyphicon glyphicon-chevron-down"></span>
+                      {{else}}
+                      <span class="glyphicon glyphicon-chevron-up"></span>
+                  {{/if}}{{/if}}
+                </span>
+              {{else}}
+                {{label}}
+              {{/if}}
+            </th>
+          {{/each}}
+        </tr>
+      </thead>
+      {{#if ready}}
+        <tbody>
+          {{#unless records.length}}
+            No records found matching your filters. <a data-action="clearFilters">Clear your filters?</a>
+          {{/unless}}
+          {{#each records}}
+            <tr class="cl-row {{rowClass}}" data-doc="{{_id}}">
+              {{#each fields}}
+                <td class="{{class}}">
+                  {{#if tpl}}
+                    {{#with fieldCellContext ..}}
+                      {{> ../tpl}}
+                    {{/with}}
+                    {{else}}
+                    {{getField ..}}
+                  {{/if}}
+                </td>
+              {{/each}}
+            </tr>
+          {{/each}}
+        </tbody>
+        {{else}}
+        <td colspan={{fieldCount}}>
+          {{> loading}}
+        </td>
+      {{/if}}
+    </table>
+
+</template>
