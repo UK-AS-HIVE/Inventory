@@ -1,0 +1,47 @@
+<template name="consumableHistoryModal">
+  {{#with consumable}}
+    <div class="modal fade" id="consumableHistoryModal">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">History for Consumable {{itemName}}</h4>
+          </div>
+          <div class="modal-body"> 
+            <div class="row">
+              <div class="col-xs-12">
+                <h2>Changes</h2>
+                {{! First item is the item entry }}
+                {{#with first history}}
+                <div class="row">
+                  <div class="col-md-12">
+                    {{timestampFormatter timestamp}}:
+                    <strong>{{username}}</strong> entered this item into the database
+                  </div>
+                </div>
+                {{/with}}
+                {{#each rest history}}
+                  <div class="row">
+                    <div class="col-md-12">
+                      {{timestampFormatter timestamp}}: <strong>{{username}}</strong>
+                      {{#if note}}
+                        left a note:
+                        <div class="well">{{note}}</div>
+                      {{else}}
+                        changed field <strong>{{field}}</strong> from
+                        <strong>{{oldValue}}</strong> to <strong>{{newValue}}</strong>
+                      {{/if}}
+                    </div>
+                  </div>
+                {{/each}}
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" data-dismiss="modal" class="btn btn-default">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  {{/with}}
+</template>
