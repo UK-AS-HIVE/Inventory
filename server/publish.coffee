@@ -14,7 +14,12 @@ Meteor.publish 'consumables', (filter, sortKey, sortDir, page) ->
   sort[sortKey] = sortDir
   skip = 20*page
   Counts.publish this, 'consumablesCount', Consumables.find(filter)
-  Consumables.find(filter, {sort: sort, skip: skip, limit: 20})
+  Consumables.find(filter, {fields: {history: 0}, sort: sort, skip: skip, limit: 20})
+
+Meteor.publish 'consumableHistory', (consumableId) ->
+  unless Roles.userIsInRole @userId, 'admin'
+    throw new Meteor.Error(403, "Only admins may access consumables")
+  Consumables.find consumableId
 
 Meteor.publishComposite 'inventory', (filter, options) ->
   filter = filter || {}

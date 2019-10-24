@@ -132,3 +132,35 @@ Meteor.methods
             failures.push(i)
       console.log "#{failures.length} items failed to import"
       return failures
+  
+  insertConsumable: (consumable) ->
+    console.log 'insertConsumable', consumable
+    if Roles.userIsInRole @userId, 'admin'
+      username = Meteor.users.findOne(@userId).username
+      consumable.history = [
+        timestamp: new Date()
+        username: username
+      ]
+      Consumables.insert consumable
+
+  updateConsumable: (consumableId, itemName, currentStock, note) ->
+    if Roles.userIsInRole @userId, 'admin'
+      u = Meteor.users.findOne(@userId)
+      consumable =
+        itemName: itemName
+        currentStock: currentStock
+      modifier =
+        $set: consumable
+      if note?
+        modifier.$set.note = note
+      #  modifier.$push = 
+      #    history:
+      #        username: u.username
+      #        timestamp: new Date()
+      #        note: note
+
+      Consumables.update consumableId, modifier
+
+  getConsumableHistory: (consumableId) ->
+    if Roles.userIsInRole @userId, 'admin'
+      Consumables.findOne(consumableId).history || []

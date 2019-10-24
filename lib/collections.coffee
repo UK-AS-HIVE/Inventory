@@ -315,3 +315,25 @@ Meteor.users.attachSchema new SimpleSchema
     type: Number
     decimal: true
     min: 0
+  note:
+    type: String
+    optional: true
+  history:
+    type: [Object]
+    optional: true
+  'history.$.note':
+    type: String
+    optional: true
+  'history.$.timestamp':
+    type: new Date()
+  'history.$.username':
+    type: String
+  'history.$.field':
+    type: String
+    optional: true
+  'history.$.oldValue':
+    type: String
+    optional: true
+  'history.$.newValue':
+    type: String
+    optional: true

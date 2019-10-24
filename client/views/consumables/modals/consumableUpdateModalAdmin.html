@@ -20,7 +20,10 @@
             </label>
             <input type="text" name="currentStock" data-required="true" data-schema-key="currentStock" class="form-control" value="{{currentValue.currentStock}}">
           </div>
-          <button type="button" data-modal="assetHistoryModal" data-toggle="modal" class="btn btn-sm btn-default hidden-xs">View History</button>
+          <div class="form-group">
+            <label for="notes">Additional Notes:</label>
+            <textarea name="notes" rows=3 class="form-control" value="{{currentValue.note}}"></textarea>
+          </div>
         </div>
         <div class="modal-footer">
           <button type="button" data-action="submit" name="update" class="btn btn-primary pull-left">Update</button>

@@ -24,18 +24,11 @@ Template.consumableUpdateModalAdmin.events
           $el.closest('.form-group').removeClass('has-error')
 
       obj[f] = $el.val()
+    obj.note = tpl.$('textarea[name="notes"]').val()
 
-    Consumables.update tpl.data.docId,
-      $set: obj,
-      (err, res) ->
+    Meteor.call 'updateConsumable', tpl.data.docId,
+      obj.itemName, obj.currentStock, obj.note, (err, res) ->
         if err
           tpl.error.set err
         else
-          if tpl.$('textarea').val()
-            Meteor.call 'addConsumableNote', res, tpl.$('textarea').val()
           tpl.$('#consumableUpdateModalAdmin').modal('hide')
-
-  'click button[name=cancel]': (e, tpl) ->
-    return
-  'click button[name=viewHistory]': (e, tpl) ->
-    return

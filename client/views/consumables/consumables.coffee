@@ -26,8 +26,9 @@ Template.consumables.helpers
     Consumables.find({}, {sort: sort}).fetch()
   fields: ->
     fields = [
-      {key: 'itemName', label: 'Item', class: 'col-md-4'},
-      {key: 'currentStock', label: 'Current Stock', class: 'col-md-4'}
+      {key: 'itemName', label: 'Item', class: 'col-md-3'},
+      {key: 'currentStock', label: 'Current Stock', class: 'col-md-3'}
+      {key: 'note', label: 'Note', class: 'col-md-3'}
       {key: 'actions', label: 'Actions', tpl: Template.consumablesActionsAdminField, sortable: false}
     ]
     _.map fields, (f) ->
