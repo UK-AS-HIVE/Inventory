@@ -51,6 +51,7 @@ Template.consumables.helpers
   lastVisibleItem: ->
     tpl = Template.instance()
     Math.min tpl.page.get()*20 + tpl.pageLimit.get(), (Counts.get('consumablesCount') || Consumables.find({}).count())
+  itemCount: -> Consumables.find({}).count()
   isSortKey: ->
     @key is Template.instance().sortKey.get()
   isAscending: ->
