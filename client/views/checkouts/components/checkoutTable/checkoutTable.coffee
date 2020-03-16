@@ -36,6 +36,7 @@ setup = ->
   context.skip = new ReactiveVar(0)
   context.checkoutFilters = @data.checkoutFilters || @data.settings.checkoutFilters || -> {}
   context.inventoryFilters = @data.inventoryFilters || @data.settings.inventoryFilters || -> {}
+  context.awaitingApproval = @data.awaitingApproval || @data.settings.awaitingApproval || -> false
   context.subscription = @data.subscription || @data.settings.subscription || "inventory"
   @context = context
 
@@ -123,6 +124,7 @@ Template.checkoutTable.rendered = ->
     Meteor.subscribe 'checkouts',
       context.checkoutFilters(),
       context.inventoryFilters(),
+      context.awaitingApproval(),
       { limit: limit, skip: skip, sort: sort },
       onReady: -> context.ready.set(true)
 

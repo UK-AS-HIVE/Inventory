@@ -5,10 +5,14 @@ Template.checkoutFilters.events
     else
       # Clear button
       Iron.query.set tpl.$(e.target).data('filter'), null
+  'change input.filter-awaitingApprovals': (e, tpl) ->
+    Iron.query.set 'awaitingApprovals', $(e.target).prop('checked')
     
 Template.checkoutFilters.helpers
   startDate: -> Iron.query.get 'startDate' || '1960-01-01'
   endDate: -> Iron.query.get 'endDate' || '2100-12-31'
+  checkedIfAwaitingApprovals: ->
+    if Iron.query.get 'awaitingApprovals' then "checked" else ""
   facetKeys: -> [
     { key: 'deviceType', label: 'Device Type' }
   ]

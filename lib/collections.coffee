@@ -113,6 +113,9 @@ SimpleSchema.messages {
     label: "Ship Date"
     type: new Date()
     optional: true
+  awaitingApproval:
+    type: Boolean
+    optional: true
 
 @Changelog = new Mongo.Collection 'changelog'
 @Changelog.attachSchema new SimpleSchema
