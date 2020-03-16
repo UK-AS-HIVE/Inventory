@@ -8,7 +8,7 @@
     </div>
     {{#each facetKeys}}
       <div class="dropdown inline-block facet-dropdown">
-        <button class="btn btn-default dropdown-toggle" type="button" data-facet="deviceType" data-toggle="dropdown">
+        <button class="btn btn-default dropdown-toggle" type="button" data-facet="{{key}}" data-toggle="dropdown">
           {{label}}: {{selection}} <span class="caret"></span>
         </button>
         <ul class="dropdown-menu">

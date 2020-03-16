@@ -1,4 +1,4 @@
-fields = [ 'serialNo', 'model', 'department', 'propertyTag', 'roomNumber', 'building', 'owner', 'name', 'shipDate' ]
+fields = [ 'serialNo', 'model', 'department', 'propertyTag', 'roomNumber', 'building', 'owner', 'name', 'shipDate', 'deviceType' ]
 boolFields = [ 'checkout', 'enteredIntoEbars', 'delivered', 'isPartOfReplacementCycle' ]
 
 Template.newAssetModal.onCreated ->
@@ -56,6 +56,7 @@ Template.newAssetModal.rendered = ->
 
 Template.newAssetModal.helpers
   departments: -> departments
+  deviceTypes: -> deviceTypes
   error: -> Template.instance().error.get()
   modelSettings: ->
     {
@@ -140,4 +141,16 @@ departments = [
   'Writing, Rhetoric & Digital Studies'
   'Other/Not listed'
   'Unassigned'
+]
+
+deviceTypes = [
+  'PC laptop'
+  'Mac laptop'
+  'iPad'
+  'Webcam'
+  'Headset with microphone'
+  'Video Camera/Audio Recorder'
+  'Projector'
+  'Miscellaneous'
+  'Bioinformatics laptop'
 ]

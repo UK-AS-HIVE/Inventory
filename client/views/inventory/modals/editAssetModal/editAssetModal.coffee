@@ -1,8 +1,9 @@
-fields = [ 'name', 'propertyTag', 'serialNo', 'model', 'department', 'roomNumber', 'building', 'owner', 'shipDate' ]
+fields = [ 'name', 'propertyTag', 'serialNo', 'model', 'department', 'roomNumber', 'building', 'owner', 'shipDate', 'deviceType' ]
 Template.editAssetModal.helpers
   item: -> Inventory.findOne(@docId)
   file: -> FileRegistry.findOne(@fileId)
   departments: -> _.map departments, (v) -> { label: v, value: v }
+  deviceTypes: -> _.map deviceTypes, (v) -> { label: v, value: v }
   formatDate: (date) -> moment(date).format('MMM D, YYYY')
 
 Template.editAssetModal.rendered = ->
@@ -146,4 +147,16 @@ departments = [
   'Writing, Rhetoric & Digital Studies'
   'Other/Not listed'
   'Unassigned'
+]
+
+deviceTypes = [
+  'PC laptop'
+  'Mac laptop'
+  'iPad'
+  'Webcam'
+  'Headset with microphone'
+  'Video Camera/Audio Recorder'
+  'Projector'
+  'Miscellaneous'
+  'Bioinformatics laptop'
 ]

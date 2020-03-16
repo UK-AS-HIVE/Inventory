@@ -17,6 +17,7 @@ Template.checkoutFilters.helpers
     key = @key
     active = Iron.query.get(key)?.split(',') || []
     _.map _.sortBy(Facets.findOne()?.facets[key], (f) -> -f.count), (l) ->
+      if !l.name?.length then l.name = '(none)'
       _.extend l,
         key: key
         checked: if l.name in active then 'checked'

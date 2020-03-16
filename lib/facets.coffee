@@ -18,3 +18,4 @@ if Meteor.isServer
     owner: String
     building: String
     model: String
+    deviceType: String
