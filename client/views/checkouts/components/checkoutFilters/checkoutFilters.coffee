@@ -9,6 +9,7 @@ Template.checkoutFilters.events
     Iron.query.set 'awaitingApprovals', $(e.target).prop('checked')
     
 Template.checkoutFilters.helpers
+  isAdmin: -> Roles.userIsInRole Meteor.userId(), 'admin'
   startDate: -> Iron.query.get 'startDate' || '1960-01-01'
   endDate: -> Iron.query.get 'endDate' || '2100-12-31'
   checkedIfAwaitingApprovals: ->
