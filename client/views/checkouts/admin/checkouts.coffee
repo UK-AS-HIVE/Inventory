@@ -18,6 +18,9 @@ checkoutFilters = ->
     ]
   }
 
+awaitingApproval = ->
+  if Iron.query.get('awaitingApprovals') then true else false
+
 inventoryFilters = ->
   filters = {
     deviceType: Iron.query.get 'deviceType'
@@ -42,5 +45,6 @@ Template.checkoutsAdmin.helpers
       ]
       inventoryFilters: inventoryFilters
       checkoutFilters: checkoutFilters
+      awaitingApproval: awaitingApproval
     }
 

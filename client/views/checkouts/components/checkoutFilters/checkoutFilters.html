@@ -6,6 +6,7 @@
       <span class="checkout-daterange-addon">To</span>
       <input type="text" class="form-control" data-filter="endDate" value="{{endDate}}">
     </div>
+
     {{#each facetKeys}}
       <div class="dropdown inline-block facet-dropdown">
         <button class="btn btn-default dropdown-toggle" type="button" data-facet="{{key}}" data-toggle="dropdown">
@@ -19,5 +20,17 @@
         </ul>
       </div>
     {{/each}}
+
+    {{#if isAdmin}}
+    <div class="input-group input-group-inline">
+      <div class="checkbox">
+        <label>
+          <input type="checkbox" class="filter-awaitingApprovals" {{checkedIfAwaitingApprovals}}>
+            Awaiting Approvals
+        </label>
+      </div>
+    </div>
+    {{/if}}
+
   </div>
 </template>

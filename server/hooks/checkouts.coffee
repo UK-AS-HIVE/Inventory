@@ -5,6 +5,9 @@ Checkouts.after.insert (userId, doc) ->
     item = Inventory.findOne(doc.assetId)
     requester = Meteor.users.findOne(doc.assignedTo)
     name = item.name || item.model # Name is preferred, but not required, so model as fallback
+    Inventory.update doc.assetId,
+      $set:
+        awaitingApproval: true
     Email.send
       from: Meteor.settings.email.fromEmail
       to: emails
@@ -35,3 +38,9 @@ Checkouts.after.update (userId, doc, fieldNames, modifier, options) ->
       subject: "Your reservation of #{name} has been rejected"
       html: "Your reservation of #{name} for #{moment(doc.schedule.timeReserved).format('LL')} has been rejected.<br>
       Reason given: #{doc.approval.reason}"
+
+  # If there are no longer any pending approvals, reset it on Inventory
+  if Checkouts.find({assetId: doc.assetId, approval: {$exists: false}}).count() == 0
+    Inventory.update doc.assetId,
+      $set:
+        awaitingApproval: false

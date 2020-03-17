@@ -108,7 +108,9 @@ Meteor.publish 'checkoutHistory', (assetId) ->
   if Roles.userIsInRole @userId, 'admin'
     Checkouts.find { assetId: assetId }
 
-Meteor.publishComposite 'checkouts', (checkoutFilter, inventoryFilter, options) ->
+Meteor.publishComposite 'checkouts', (checkoutFilter, inventoryFilter, awaitingApprovals, options) ->
+  check awaitingApprovals, Boolean
+
   _.extend inventoryFilter, { checkout: true }
 
   if checkoutFilter
@@ -116,6 +118,9 @@ Meteor.publishComposite 'checkouts', (checkoutFilter, inventoryFilter, options) 
     # might be cleaner to pass in startDate and endDate explicitly, form the filter here?
     ids = _.pluck Checkouts.find(checkoutFilter).fetch(), 'assetId'
     _.extend inventoryFilter, { _id: { $nin: ids } }
+
+  if awaitingApprovals
+    inventoryFilter.awaitingApproval = true
 
   [itemSet, facets] = Inventory.findWithFacets inventoryFilter, options
   itemSet = _.pluck itemSet.fetch(), '_id'
