@@ -1,0 +1,28 @@
+{
+  "name": "inventory",
+  "version": "1.0.0",
+  "description": "Inventory is a Meteor.js application for asset management.",
+  "dependencies": {
+    "babel-runtime": "^6.26.0",
+    "meteor-node-stubs": "^0.2.3"
+  },
+  "scripts": {
+    "test": "meteor test --port 4096 --once --driver-package=dispatch:mocha-phantomjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/UK-AS-HIVE/Inventory.git"
+  },
+  "keywords": [
+    "inventory",
+    "checkouts",
+    "assets",
+    "consumables"
+  ],
+  "author": "UK A&S HIVE",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/UK-AS-HIVE/Inventory/issues"
+  },
+  "homepage": "https://github.com/UK-AS-HIVE/Inventory#readme"
+}

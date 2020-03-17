@@ -12,7 +12,7 @@ babel-compiler@6.18.2
 babel-runtime@1.0.1
 base64@1.0.10
 binary-heap@1.0.10
-blaze@2.3.2
+blaze@2.3.3
 blaze-html-templates@1.0.5
 blaze-tools@1.0.10
 boilerplate-generator@1.0.11
@@ -21,7 +21,7 @@ caching-html-compiler@1.0.7
 callback-hook@1.0.10
 check@1.2.5
 chuangbo:cookie@1.1.0
-coffeescript@1.11.1_3
+coffeescript@1.0.17
 cottz:iron-query@1.2.5
 dandv:caret-position@2.1.1
 ddp@1.2.5
@@ -35,7 +35,7 @@ differential:cluster@1.0.2
 ecmascript@0.7.3
 ecmascript-runtime@0.3.15
 ejson@1.0.13
-email@1.2.1
+email@1.2.3
 fastclick@1.0.13
 geojson-utils@1.0.10
 hive:accounts-ldap@0.4.2
@@ -82,14 +82,14 @@ mongo-livedata@1.0.12
 mrt:moment@2.8.1
 multipart@1.0.0
 natestrauser:select2@4.0.3
-npm-mongo@2.2.24
+npm-mongo@2.2.34
 observe-sequence@1.0.16
 ordered-dict@1.0.9
 percolate:migrations@0.9.8
 percolate:synced-cron@1.3.2
 promise@0.8.8
 raix:eventemitter@0.1.3
-rajit:bootstrap3-datepicker@1.6.4
+rajit:bootstrap3-datepicker@1.5.1
 random@1.0.10
 rate-limit@1.0.8
 reactive-dict@1.1.8
@@ -100,10 +100,9 @@ reywood:publish-composite@1.4.2
 routepolicy@1.0.12
 service-configuration@1.0.11
 session@1.1.7
-shell-server@0.2.3
 spacebars@1.0.13
 spacebars-compiler@1.1.1
-standard-minifier-css@1.3.4
+standard-minifier-css@1.3.5
 standard-minifier-js@2.0.0
 templating@1.2.15
 templating-compiler@1.2.15
