@@ -65,6 +65,8 @@ SimpleSchema.messages {
     ]
   'attachments.$.fileId':
     type: String
+  'attachments.$._id':
+    type: String
   enteredIntoEbars:
     label: "Entered into Ebars?"
     type: Boolean
@@ -97,10 +99,10 @@ SimpleSchema.messages {
     optional: true
   'notes.$.message':
     type: String
-    autoform:
-      afFieldInput:
-        type: 'textarea'
-        rows: 3
+    #autoform:
+    #  afFieldInput:
+    #    type: 'textarea'
+    #    rows: 3
   'notes.$.enteredByUserId':
     type: String
   'notes.$.enteredAtTimestamp':

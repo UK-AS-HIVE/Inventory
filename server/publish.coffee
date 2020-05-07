@@ -20,6 +20,7 @@ Meteor.publish 'consumableHistory', (consumableId) ->
     throw new Meteor.Error(403, "Only admins may access consumables")
   Consumables.find consumableId
 
+###
 Meteor.publishComposite 'inventory', (filter, options) ->
   filter = filter || {}
   dm = Roles.getGroupsForUser(@userId, 'departmentManager')
@@ -60,6 +61,7 @@ Meteor.publishComposite 'inventory', (filter, options) ->
       }
     ]
   }
+###
 
 Meteor.publishComposite 'newInventory', (filter, time) ->
   if not filter then filter = {}
@@ -83,7 +85,7 @@ Meteor.publishComposite 'newInventory', (filter, time) ->
     ]
   }
 
-
+###
 Meteor.publishComposite 'inventorySet', (set) ->
   if not set then set = []
   filter = { _id: { $in: set } }
@@ -103,11 +105,64 @@ Meteor.publishComposite 'inventorySet', (set) ->
       }
     ]
   }
+###
+
+util = Npm.require('util')
 
 Meteor.publish 'checkoutHistory', (assetId) ->
   if Roles.userIsInRole @userId, 'admin'
     Checkouts.find { assetId: assetId }
 
+Checkouts.queries.allCheckouts.expose()
+Checkouts.queries.pagedCheckouts.expose()
+Inventory.queries.inventory.expose
+  firewall: (userId, params) ->
+    console.log 'inventory firewall:', util.inspect(arguments, false, null)
+  embody: (body, params) ->
+    console.log('embody inventory', util.inspect(arguments, false, null))
+    #dm = Roles.getGroupsForUser(userId, 'departmentManager')
+    #if dm.length
+    #  params.$filter.department = dm[0]
+    #else unless Roles.userIsInRole userId, 'admin'
+    #  # Non-admin/DM users can only view their own items.
+    #  params.filter.owner = Meteor.users.findOne(userId).username
+    # TODO: this hack is needed because Mongo lacks a "nulls first"/"nulls last" option...
+    # https://jira.mongodb.org/browse/SERVER-153
+    if params.sortKey == 'shipDate'
+      params.filter =
+        $and: [
+          shipDate: $ne: null
+          params.filter
+        ]
+  
+    
+Inventory.queries.checkouts.expose
+  firewall: (userId, params) ->
+    console.log('checkouts firewall', util.inspect(arguments, false, null))
+    aWeekAgo = moment().subtract(1, 'weeks').toDate()
+    today = moment().hours(0).minutes(0).seconds(0).toDate()
+    params = params or {}
+    params.recentCheckoutsFilter =
+      $or: [
+        { 'schedule.timeReserved': { $gte: aWeekAgo } }
+        { 'schedule.expectedReturn': { $gte: aWeekAgo } }
+        { $and: [
+          { 'schedule.timeReserved': { $exists: true } }
+          { 'schedule.expectedReturn': { $exists: false } }
+        ] }
+        { $and: [
+          { 'schedule.timeCheckedOut': { $exists: true } }
+          { 'schedule.timeReturned': { $exists: false } }
+          { 'schedule.expectedReturn': { $lt: today } }
+        ] }
+      ]  
+    unless Roles.userIsInRole userId, 'admin'
+      params.recentCheckoutsFilter.assignedTo = userId
+  embody: (body, params) ->
+    console.log('checkouts embody', util.inspect(arguments, false, null))
+    fields = { fields: { assignedTo: 0, 'approver.approverId': 0 } }
+
+###
 Meteor.publishComposite 'checkouts', (checkoutFilter, inventoryFilter, awaitingApprovals, options) ->
   check awaitingApprovals, Boolean
 
@@ -191,6 +246,9 @@ Meteor.publishComposite 'checkouts', (checkoutFilter, inventoryFilter, awaitingA
 
     ]
   }
+###
+
+
 
 Meteor.publish 'item', (itemId) ->
   if Roles.userIsInRole @userId, 'admin'

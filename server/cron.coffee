@@ -19,8 +19,8 @@ findOverdueItems = ->
         to: user?.mail
         subject: "Your checkout of item #{name} is overdue"
         html: "Your checkout of item #{name} was expected to be returned on #{moment(c.schedule.expectedReturn).format('LL')}.
-        By our records, it still has not been checked in. Please return the item to POT 915, 923, or 961.
-        If you believe this message is in error, please submit a help request."
+        By our records, it still has not been checked in." + # Please return the item to POT 915, 923, or 961.
+        "If you believe this message is in error, please submit a help request."
 
 findDueItems = ->
   console.log "Finding due items"
@@ -43,8 +43,8 @@ findDueItems = ->
         from: Meteor.settings.email.fromEmail
         to: user?.mail
         subject: "Your checkout of item #{name} is due today"
-        html: "Your expected return date for item #{name} is #{moment(doc.schedule.expectedReturn).format('LL')}.
-          Please have the item ready to return. It may be dropped off in POT 915, 923, or 961."
+        html: "Your expected return date for item #{name} is #{moment(doc.schedule.expectedReturn).format('LL')}."
+        # "Please have the item ready to return. It may be dropped off in POT 915, 923, or 961."
         
 
 SyncedCron.add
@@ -79,8 +79,8 @@ pickupReminders = ->
         to: user.mail
         subject: "REMINDER: Your checkout of item #{name} for #{moment(c.schedule.timeReserved).format('LL')}"
         html: "This email is to remind you of your request for checkout item #{name} for dates
-          #{moment(c.schedule.timeReserved).format('LL')} through #{moment(c.schedule.expectedReturn).format('LL')}.
-          Please visit POT 915, 923, or 961 to pick up your item when ready."
+          #{moment(c.schedule.timeReserved).format('LL')} through #{moment(c.schedule.expectedReturn).format('LL')}."
+          #"Please visit POT 915, 923, or 961 to pick up your item when ready."
 
 dueSoonReminders = ->
   console.log "Sending due-soon reminders"
@@ -105,7 +105,7 @@ dueSoonReminders = ->
         from: Meteor.settings.email.fromEmail
         to: user.mail
         subject: "Your checkout of item #{name} is due soon"
-        html: "Your expected return date for item #{name} is #{moment(c.schedule.expectedReturn).format('LL')}. Please have the item ready to return. It may be dropped off in POT 915, 923, or 961."
+        html: "Your expected return date for item #{name} is #{moment(c.schedule.expectedReturn).format('LL')}. Please have the item ready to return." #"It may be dropped off in POT 915, 923, or 961."
 
 
 SyncedCron.add

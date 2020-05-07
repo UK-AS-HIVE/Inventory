@@ -26,8 +26,8 @@ Checkouts.after.update (userId, doc, fieldNames, modifier, options) ->
       from: Meteor.settings.email.fromEmail
       to: Meteor.users.findOne(doc.assignedTo)?.mail
       subject: "Your reservation of #{name} has been approved"
-      html: "Your reservation of #{name} for #{moment(doc.schedule.timeReserved).format('LL')} has been approved.
-      Please visit POT 915, 923, or 961 to pick up your item on that date when ready.#{reason}"
+      html: "Your reservation of #{name} for #{moment(doc.schedule.timeReserved).format('LL')} has been approved."
+      # + "Please visit POT 915, 923, or 961 to pick up your item on that date when ready.#{reason}"
 
   else if modifier.$set?.approval?.approved is false or modifier.$set?['approval.approved'] is false
     item = Inventory.findOne(doc.assetId)

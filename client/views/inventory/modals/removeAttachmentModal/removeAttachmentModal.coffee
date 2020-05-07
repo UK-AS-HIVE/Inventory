@@ -5,7 +5,7 @@ Template.removeAttachmentModal.events
   'click button[data-action=removeAttachment]': (e, tpl) ->
     console.log @
     #TODO: This isn't very good if we ever allow for an actual purpose...
-    Inventory.update @itemId, { $pull: { attachments: { fileId: @attachmentId, purpose: 'Other' } } }
+    Inventory.update @itemId, { $pull: { attachments: { fileId: @attachmentId, _id: @attachmentId, purpose: 'Other' } } }
     $('#removeAttachmentModal').modal('hide')
 
   'show.bs.modal': (e, tpl) ->

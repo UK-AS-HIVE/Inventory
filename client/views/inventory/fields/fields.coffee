@@ -29,17 +29,17 @@ Template.attachmentField.events
     e.stopPropagation()
     id = @documentId
     Media.pickLocalFile (fileId) ->
-      Inventory.update id, { $addToSet: { attachments: { fileId: fileId , purpose: 'Other' } } }
+      Inventory.update id, { $addToSet: { attachments: { fileId: fileId , _id: fileId, purpose: 'Other' } } }
     tpl.$('.dropdown-toggle').dropdown('toggle')
 
   'click a[data-action=takePicture]': (e, tpl) ->
     id = @documentId
     Media.capturePhoto (fileId) ->
-      Inventory.update id, { $addToSet: { attachments: { fileId: fileId , purpose: 'Other' } } }
+      Inventory.update id, { $addToSet: { attachments: { fileId: fileId , _id: fileId, purpose: 'Other' } } }
 
 Template.inventoryActionsField.helpers
   isAdmin: -> Roles.userIsInRole Meteor.userId(), 'admin'
-  delivered: -> Inventory.findOne(@documentId).delivered
+  delivered: -> Inventory.findOne(@documentId)?.delivered
 
 Template.inventoryActionsField.events
   'click button[data-toggle=modal]': (e, tpl) ->

@@ -77,13 +77,16 @@ Template.checkoutTable.helpers
   firstVisibleItem: ->
     if Inventory.find().count() is 0 then 0 else @skip.get() + 1
   lastVisibleItem: ->
-    Math.min @skip.get() + @pageLimit, (Counts.get('checkoutCount') || Inventory.find(@inventoryFilters()).count())
+    count = Template.instance().count.get()
+    Math.min @skip.get() + @pageLimit, count
   lastDisabled: ->
     if @skip.get() <= 0 then "disabled"
   nextDisabled: ->
-    if @skip.get() + @pageLimit + 1 > (Counts.get('checkoutCount') || Inventory.find(@inventoryFilters()).count()) then "disabled"
+    count = Template.instance().count.get()
+    if @skip.get() + @pageLimit + 1 > count then "disabled"
   itemCount: ->
-    Counts.get('checkoutCount') || Inventory.find().count()
+    Template.instance().count.get()
+    #Counts.get('checkoutCount') || Inventory.find().count()
 
 Template.checkoutTable.events
   'click span[class=inventory-table-heading]': (e) ->
@@ -99,7 +102,9 @@ Template.checkoutTable.events
     context = Template.instance().context
     skip = context.skip.get()
     pageLimit = context.pageLimit
-    if skip + pageLimit < (Counts.get('checkoutCount') || Inventory.find().count())
+    count = Template.instance().count.get()
+    console.log 'next page?', skip, pageLimit, count
+    if skip + pageLimit < count
       Template.instance().context.skip.set(skip + pageLimit)
 
   'click button[data-action=lastPage]': (e, tpl) ->
@@ -109,10 +114,13 @@ Template.checkoutTable.events
     newSkip = Math.max skip - pageLimit, 0
     Template.instance().context.skip.set(newSkip)
 
+Template.checkoutTable.onCreated ->
+  @count = new ReactiveVar 0
 
-Template.checkoutTable.rendered = ->
-  @autorun ->
-    context = @.templateInstance().context
+Template.checkoutTable.onRendered ->
+  @autorun =>
+    #context = @.templateInstance().context
+    context = @context
     sort = {}
     sortKey = context.sortKey.get()
     limit = context.pageLimit
@@ -121,12 +129,42 @@ Template.checkoutTable.rendered = ->
 
     context.ready.set(false)
 
+    ###
     Meteor.subscribe 'checkouts',
       context.checkoutFilters(),
       context.inventoryFilters(),
       context.awaitingApproval(),
       { limit: limit, skip: skip, sort: sort },
       onReady: -> context.ready.set(true)
+    ###
+    params =
+      limit: context.pageLimit
+      sortOrder: context.sortOrder.get() || -1
+      sortKey: context.sortKey.get()
+      skip: context.skip.get()
+      awaitingApproval: context.awaitingApproval()
+      inventoryFilters: context.inventoryFilters()
+      checkoutFilters: context.checkoutFilters()
+
+
+    query = Inventory.queries.checkouts.clone params
+    handle = query.subscribe (err, res) ->
+      console.log 'subscribed to allCheckouts subs id:', arguments
+
+    countQuery = Inventory.queries.checkouts.clone params
+    console.log 'subscribing to checkouts count with params: ', params
+    countHandle = countQuery.subscribeCount()
+    console.log 'allCheckouts countHandle: ', countHandle
+    
+    @autorun =>
+      if countHandle.ready()
+        #console.log 'checkouts count: ', countQuery.getCount()
+        @count.set countQuery.getCount()
+
+
+    @autorun ->
+      console.log 'allCheckouts sub ready? ', handle.ready()
+      context.ready.set handle.ready()
 
     # Subscription onReady callbacks sometimes don't fire on re-sub inside autorun
     # see https://github.com/meteor/meteor/issues/1173

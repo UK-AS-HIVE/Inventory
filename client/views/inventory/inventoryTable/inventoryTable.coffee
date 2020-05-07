@@ -89,13 +89,14 @@ Template.inventoryTable.helpers
   firstVisibleItem: ->
     if Inventory.find(@getFiltersForClient()).count() is 0 then 0 else @skip.get() + 1
   lastVisibleItem: ->
-    Math.min @skip.get() + @pageLimit, (Counts.get('inventoryCount') || Inventory.find(@getFiltersForClient()).count())
+    Math.min @skip.get() + @pageLimit, Template.instance().count.get()
   lastDisabled: ->
     if @skip.get() <= 0 then "disabled"
   nextDisabled: ->
-    if @skip.get() + @pageLimit + 1 > (Counts.get('inventoryCount') || Inventory.find(@getFiltersForClient()).count()) then "disabled"
+    if @skip.get() + @pageLimit + 1 > Template.instance().count.get() then "disabled"
   itemCount: ->
-    Counts.get('inventoryCount') || Inventory.find(@getFiltersForClient()).count()
+    Template.instance().count.get()
+    #Counts.get('inventoryCount') || Inventory.find(@getFiltersForClient()).count()
 
 Template.inventoryTable.events
   'click span[class=inventory-table-heading]': (e) ->
@@ -111,7 +112,7 @@ Template.inventoryTable.events
     context = Template.instance().context
     skip = context.skip.get()
     pageLimit = context.pageLimit
-    if skip + pageLimit < (Counts.get('inventoryCount') || Inventory.find().count())
+    if skip + pageLimit < tpl.count.get()
       Template.instance().context.skip.set(skip + pageLimit)
 
   'click button[data-action=lastPage]': (e, tpl) ->
@@ -125,15 +126,42 @@ Template.inventoryTable.events
     tpl.context.clearFilters()
 
 
-Template.inventoryTable.rendered = ->
-  @autorun ->
-    context = @.templateInstance().context
+Template.inventoryTable.onCreated ->
+  @count = new ReactiveVar 0
+
+Template.inventoryTable.onRendered ->
+  @autorun =>
+    context = @context
     sort = {}
     sortKey = context.sortKey.get()
     limit = context.pageLimit
     skip = context.skip.get()
     sort[sortKey] = context.sortOrder.get() || -1
 
+    params =
+      limit: context.pageLimit
+      sortOrder: context.sortOrder.get() || -1
+      sortKey: context.sortKey.get()
+      skip: context.skip.get()
+      filter: context.getFilters()
+    
+    console.log('subscribing to inventory with params', params);
+
+    query = Inventory.queries.inventory.clone(params)
+    handle = query.subscribe (err, res) ->
+      console.log 'subscribed to inventory, subscription id:', arguments
+
+    countQuery = Inventory.queries.inventory.clone(params)
+    countHandle = countQuery.subscribeCount()
+    
+    @autorun =>
+      if countHandle.ready()
+        @count.set countQuery.getCount()
+
+    @autorun ->
+      context.ready.set handle.ready()
+
+    ###
     Meteor.subscribe 'inventory',
       context.getFilters(),
       { limit: limit, skip: skip, sort: sort },
@@ -141,6 +169,7 @@ Template.inventoryTable.rendered = ->
         context.ready.set(true)
       onStop: ->
         context.ready.set(false)
+    ###
     
     # Subscription onReady callbacks sometimes don't fire on re-sub inside autorun
     # see https://github.com/meteor/meteor/issues/1173

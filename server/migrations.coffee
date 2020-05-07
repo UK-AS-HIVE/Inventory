@@ -49,6 +49,22 @@ Migrations.add
           awaitingApproval: true
   down: ->
     Inventory.update {}, {$unset: {awaitingApproval: true}}, {multi: true}
+
+Migrations.add
+  version: 5
+  down: ->
+    return
+  up: ->
+    Inventory.find().forEach (i) ->
+      if i.attachments
+        attachments = i.attachments.map (a) ->
+          purpose: a.purpose
+          fileId: a.fileId
+          _id: a.fileId
+        Inventory.update i._id,
+          $set:
+            attachments: attachments
+
  
 Meteor.startup ->
-  Migrations.migrateTo(4)
+  Migrations.migrateTo(5)

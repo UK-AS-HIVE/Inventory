@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Inventory is a Meteor.js application for asset management.",
   "dependencies": {
+    "@babel/runtime": "^7.9.2",
     "babel-runtime": "^6.26.0",
     "meteor-node-stubs": "^0.2.3"
   },

@@ -30,7 +30,7 @@ Template.editAssetModal.events
 
   'click button[data-action=attachFile]': (e, tpl) ->
      Media.pickLocalFile (fileId) =>
-       Inventory.update @_id, { $addToSet: { attachments: { fileId: fileId , purpose: 'Other' } } }
+       Inventory.update @_id, { $addToSet: { attachments: { fileId: fileId , _id: fileId, purpose: 'Other' } } }
   'click a[data-action=removeAttachment]': (e, tpl) ->
     Blaze.renderWithData Template.removeAttachmentModal, { attachmentId: @fileId, itemId: tpl.data.docId }, $('body').get(0)
     $('#removeAttachmentModal').modal('show')
