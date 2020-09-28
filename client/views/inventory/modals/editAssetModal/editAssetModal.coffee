@@ -107,7 +107,10 @@ lookupShipDate = (tpl) ->
       tpl.$('input[data-schema-key=shipDate]').val(moment(res).format('L'))
       tpl.$('.datepicker').datepicker('update', moment(res).format('L'))
     else
-      alert('Ship date could not be found.  Ship date lookup is only available for Dell devices.')
+      if modelVal.toLowerCase().startsWith('dell ')
+        alert("Could not get ship date for Dell device. Please double check the serial number and try again. If issue reoccurs alert the App Dev team.")
+      else 
+        alert('Ship date could not be found.  Ship date lookup is only available for Dell devices.')
   
 
 departments = [
