@@ -49,6 +49,26 @@ Migrations.add
           awaitingApproval: true
   down: ->
     Inventory.update {}, {$unset: {awaitingApproval: true}}, {multi: true}
- 
+
+Migrations.add
+  version: 5
+  up: ->
+    Checkouts.find({approval: {$exists: false}, 'schedule.checkedInBy': {$exists: true}}).forEach (c) ->
+      Checkouts.direct.update c._id,
+        $set:
+          approval:
+            approved: true
+            approverId: c.schedule.checkedInBy
+
+    Inventory.find({}).forEach (i) ->
+      approvalsRemaining = Checkouts.find({assetId: i._id, approval: {$exists: false}}).count()
+      shouldBe = (approvalsRemaining > 0)
+      console.log "Migration - #{i.name} has #{approvalsRemaining} pending approvals, setting awaitingApproval to #{shouldBe}"
+      Inventory.update i._id,
+        $set:
+          awaitingApproval: shouldBe
+  down: ->
+    return
+
 Meteor.startup ->
-  Migrations.migrateTo(4)
+  Migrations.migrateTo(5)

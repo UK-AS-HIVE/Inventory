@@ -160,6 +160,7 @@ Meteor.publishComposite 'checkouts', (checkoutFilter, inventoryFilter, awaitingA
                 { 'schedule.timeReturned': { $exists: false } }
                 { 'schedule.expectedReturn': { $lt: today } }
               ] }
+              'approval.approved': {$exists: false}
             ]
           }, fields
       }
