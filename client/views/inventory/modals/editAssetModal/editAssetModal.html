@@ -58,7 +58,7 @@
                             {{#if file.thumbnail}}
                               <img class="img-thumbnail" style="max-width: 64px; max-height:24px;" src="/file/{{file.thumbnail}}" />
                             {{/if}}
-                            <a data-action="showAttachmentModal" data-fileId="{{file._id}}">{{file.filename}}</a><br />
+                            <a data-action="showAttachmentModal" data-fileId="{{file._id}}">{{file.filename}}</a> ({{purpose}})<br />
                           </div>
                         </div>
                       {{/each}}

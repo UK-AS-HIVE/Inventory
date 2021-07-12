@@ -29,8 +29,9 @@ Template.editAssetModal.events
       $(document.body).addClass('modal-open')
 
   'click button[data-action=attachFile]': (e, tpl) ->
-     Media.pickLocalFile (fileId) =>
-       Inventory.update @_id, { $addToSet: { attachments: { fileId: fileId , purpose: 'Other' } } }
+    Media.pickLocalFile (fileId) =>
+      Blaze.renderWithData Template.attachmentTypeModal, { inventoryId: @_id, fileId: fileId }, $('body').get(0)
+      $('#attachmentTypeModal').modal('show')
   'click a[data-action=removeAttachment]': (e, tpl) ->
     Blaze.renderWithData Template.removeAttachmentModal, { attachmentId: @fileId, itemId: tpl.data.docId }, $('body').get(0)
     $('#removeAttachmentModal').modal('show')

@@ -29,13 +29,15 @@ Template.attachmentField.events
     e.stopPropagation()
     id = @documentId
     Media.pickLocalFile (fileId) ->
-      Inventory.update id, { $addToSet: { attachments: { fileId: fileId , purpose: 'Other' } } }
+      Blaze.renderWithData Template.attachmentTypeModal, { inventoryId: id, fileId: fileId }, $('body').get(0)
+      $("#attachmentTypeModal").modal('show')
     tpl.$('.dropdown-toggle').dropdown('toggle')
 
   'click a[data-action=takePicture]': (e, tpl) ->
     id = @documentId
     Media.capturePhoto (fileId) ->
-      Inventory.update id, { $addToSet: { attachments: { fileId: fileId , purpose: 'Other' } } }
+      Blaze.renderWithData Template.attachmentTypeModal, { inventoryId: id, fileId: fileId }, $('body').get(0)
+      $("#attachmentTypeModal").modal('show')
 
 Template.inventoryActionsField.helpers
   isAdmin: -> Roles.userIsInRole Meteor.userId(), 'admin'

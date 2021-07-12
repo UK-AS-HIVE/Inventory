@@ -7,6 +7,7 @@ getFilters = ->
     owner: Iron.query.get 'owner'
     building: Iron.query.get 'building'
     model: Iron.query.get 'model'
+    attachmentPurposes: Iron.query.get 'attachmentPurposes'
     $text: { $search: Iron.query.get 'search' }
   }
   

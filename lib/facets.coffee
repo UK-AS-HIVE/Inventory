@@ -19,3 +19,4 @@ if Meteor.isServer
     building: String
     model: String
     deviceType: String
+    attachmentPurposes: []

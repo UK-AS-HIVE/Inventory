@@ -269,3 +269,8 @@ Meteor.publish 'models', ->
 Meteor.publish 'buildings', ->
   if Roles.userIsInRole @userId, 'admin'
     Buildings.find {}, { limit: 100 }
+
+
+Meteor.publish 'pendingAttachment', (assetId, fileId) ->
+  if Roles.userIsInRole @userId, 'admin'
+    [Inventory.find({_id: assetId}), FileRegistry.find({_id: fileId})]

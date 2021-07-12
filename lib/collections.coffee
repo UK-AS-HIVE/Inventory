@@ -56,15 +56,18 @@ SimpleSchema.messages {
   'attachments.$.purpose':
     type: String
     allowedValues: [
-      'ApprovedQuote'
-      'PurchaseAcknowledgement'
-      'PackingSlip'
-      'DeliveryForm'
-      'OffCampusEquipmentForm'
+      'Approved Quote'
+      'Purchase Acknowledgement'
+      'Packing Slip'
+      'Delivery Form'
+      'Off Campus Equipment Form'
       'Other'
     ]
   'attachments.$.fileId':
     type: String
+  'attachmentPurposes':
+    type: [String]
+    optional: true
   enteredIntoEbars:
     label: "Entered into Ebars?"
     type: Boolean

@@ -1,0 +1,27 @@
+<template name="attachmentTypeModal">
+  <div class="modal fade" id="attachmentTypeModal" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Attachment Type</h4>
+        </div>
+        <div class="modal-body">
+          Please select the purpose of <strong>{{attachment.filename}}</strong> as related to <strong>{{assetDescription}}</strong>.
+
+          {{#each purpose in attachmentPurposes}}
+            <div class="radio">
+              <label>
+                <input type="radio" name="options" value={{purpose}} checked={{checkedIf purpose 'Other'}}>{{purpose}}
+              </label>
+            </div>
+          {{/each}}
+
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
+          <button class="btn btn-danger pull-right" data-action="confirmAttachmentPurpose">Confirm</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
