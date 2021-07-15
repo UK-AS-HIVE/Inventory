@@ -24,9 +24,10 @@ Inventory.after.update (userId, doc, fieldNames, modifier, options) ->
     Job.push new WarrantyLookupJob
       inventoryId: doc._id
 
-  Inventory.direct.update doc._id,
-    $set:
-      attachmentPurposes: doc.attachments.map (a) -> a.purpose
+  if fieldNames?.indexOf('attachments') > -1
+    Inventory.direct.update doc._id,
+      $set:
+        attachmentPurposes: doc.attachments.map (a) -> a.purpose
 
 Inventory.before.update (userId, doc, fieldNames, modifier, options) ->
   _.each fieldNames, (fn) ->
