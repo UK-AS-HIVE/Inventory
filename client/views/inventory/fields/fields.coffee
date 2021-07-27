@@ -28,7 +28,11 @@ Template.attachmentField.events
   'click a[data-action=uploadFile]': (e, tpl) ->
     e.stopPropagation()
     id = @documentId
-    Media.pickLocalFile (fileId) ->
+    options =
+      immediate: true
+      attributes:
+        multiple: null
+    Media.pickLocalFile options, (fileId) ->
       Blaze.renderWithData Template.attachmentTypeModal, { inventoryId: id, fileId: fileId }, $('body').get(0)
       $("#attachmentTypeModal").modal('show')
     tpl.$('.dropdown-toggle').dropdown('toggle')

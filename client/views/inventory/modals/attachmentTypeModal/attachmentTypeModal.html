@@ -6,6 +6,14 @@
           <h4 class="modal-title">Attachment Type</h4>
         </div>
         <div class="modal-body">
+          <div>
+            {{#if eq attachment.uploaded attachment.size}}
+              <i>Upload complete.</i>
+            {{else}}
+              <progress value={{pct attachment.uploaded attachment.size}} max="100">{{pct attachment.uploaded attachment.size}}%</progress>
+              {{pct attachment.uploaded attachment.size}}%
+            {{/if}}
+          </div>
           Please select the purpose of <strong>{{attachment.filename}}</strong> as related to <strong>{{assetDescription}}</strong>.
 
           {{#each purpose in attachmentPurposes}}

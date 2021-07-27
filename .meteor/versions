@@ -42,7 +42,7 @@ geojson-utils@1.0.10
 hive:accounts-ldap@0.4.2
 hive:export-csv@1.1.1
 hive:facets@0.1.5
-hive:file-registry@0.9.19
+hive:file-registry@0.9.20
 hot-code-push@1.0.4
 html-tools@1.0.11
 htmljs@1.0.11

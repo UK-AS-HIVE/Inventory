@@ -29,7 +29,7 @@ Template.editAssetModal.events
       $(document.body).addClass('modal-open')
 
   'click button[data-action=attachFile]': (e, tpl) ->
-    Media.pickLocalFile (fileId) =>
+    Media.pickLocalFile {immediate: true}, (fileId) =>
       Blaze.renderWithData Template.attachmentTypeModal, { inventoryId: @_id, fileId: fileId }, $('body').get(0)
       $('#attachmentTypeModal').modal('show')
   'click a[data-action=removeAttachment]': (e, tpl) ->

@@ -37,6 +37,11 @@ Template.inventoryFilters.helpers
         key: key
         checked: if l.name in active then 'checked'
 
+  attachmentTypeValue: ->
+    active = Iron.query.get('purpose')?.split(',') || []
+    Inventory.simpleSchema()._schema['attachments.$.purpose'].allowedValues.map (v) ->
+      key: v
+      checked: if v in active then 'checked'
   selection: -> Iron.query.get(@key) || "Any"
   archiveFilterChecked: -> if Iron.query.get('archived') then "checked" else ""
   isPartOfReplacementCycleFilterChecked: -> if Iron.query.get('isPartOfReplacementCycle') then "checked" else ""

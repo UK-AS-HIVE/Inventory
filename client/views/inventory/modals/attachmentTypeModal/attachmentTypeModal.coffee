@@ -10,6 +10,8 @@ Template.attachmentTypeModal.helpers
   attachmentPurposes: (e, tpl) ->
     Inventory.simpleSchema()._schema['attachments.$.purpose'].allowedValues
   checkedIf: (a, b) -> if a == b then "checked" else null
+  pct: (num, den) -> Math.round((num*100)/den)
+  eq: (a, b) -> a == b
 
 Template.attachmentTypeModal.events
   'click button[data-action=confirmAttachmentPurpose]': (e, tpl) ->
