@@ -86,8 +86,18 @@
                           </td>
                           {{#if isViewingFullHistory}}
                             <td>{{usernameFromId approval.approvedId}}</td>
-                            <td>{{usernameFromId schedule.checkedOutBy}}</td>
-                            <td>{{usernameFromId schedule.checkedInBy}}</td>
+                            <td>{{usernameFromId schedule.checkedOutBy}}
+                              {{#if schedule.timeCheckedOut}}
+                                <br>
+                                {{numeralDateFormatter schedule.timeCheckedOut}}
+                              {{/if}}
+                            </td>
+                            <td>{{usernameFromId schedule.checkedInBy}}
+                              {{#if schedule.timeReturned}}
+                                <br>
+                                {{numeralDateFormatter schedule.timeReturned}}
+                              {{/if}}
+                            </td>
                           {{/if}}
                         </tr>
                       {{/each}}
