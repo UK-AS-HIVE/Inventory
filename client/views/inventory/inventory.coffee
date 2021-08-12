@@ -47,6 +47,7 @@ Template.inventory.helpers
       'roomNumber'
       'building'
       { key: 'shipDate', tpl: Template.shipDateField, sortable: true },
+      { key: 'enteredAtTimestamp', label: 'Entered', tpl: Template.shipDateField, sortable: true },
       { key: 'attachments', tpl: Template.attachmentField, sortable: false, class: 'hidden-xs' }
     ]
     if Roles.userIsInRole Meteor.userId(), 'admin'
