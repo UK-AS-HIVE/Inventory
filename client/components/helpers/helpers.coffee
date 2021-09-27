@@ -3,8 +3,8 @@ UI.registerHelper 'commonDateFormatter', (date) ->
   moment(date).format('MMM Do, YYYY')
 
 UI.registerHelper 'numeralDateFormatter', (date) ->
-  # For short numeral dates, 2013-12-25
-  moment(date).format('YYYY-MM-DD')
+  # For short numeral dates, 12/25/2013
+  moment(date).format('MM/DD/YYYY')
 
 UI.registerHelper 'timestampFormatter', (timestamp) ->
   # For full timestamps, December 25, 2013 03:25 PM
