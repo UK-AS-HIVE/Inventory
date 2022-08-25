@@ -15,6 +15,25 @@ Checkouts.after.insert (userId, doc) ->
       html: "Requester #{requester.username} requested item #{name} for checkout from
       #{moment(doc.schedule.timeReserved).format('LL')} to #{moment(doc.schedule.expectedReturn).format('LL')}.
       Review checkout requests at <a href='#{Meteor.absoluteUrl()}checkouts'>#{Meteor.absoluteUrl()}checkouts</a>."
+    if Meteor.settings.triage?.url and Meteor.settings.triage.queueName
+      params =
+        queueName: Meteor.settings.triage.queueName
+        subject_line: name
+        username: requester.username
+        submitter_name: requester.username
+        email: requester.mail
+        description: "Requester #{requester.username} requested item #{name} for checkout from
+          #{moment(doc.schedule.timeReserved).format('LL')} to #{moment(doc.schedule.expectedReturn).format('LL')}.
+          Review checkout requests at #{Meteor.absoluteUrl()}checkouts"
+      if doc.notes?.length
+        params.description += "\n" + doc.notes[0].message
+        params['Additional Notes'] = doc.notes[0].message
+      endpoint = Meteor.settings.triage.url.replace(/\/$/, '') + '/api/1.0/submit'
+      HTTP.post endpoint, {params: params}, (err, res) ->
+        if err
+          console.log 'Error submitting checkout ticket to Triage', err
+        else
+          console.log 'Successfully sent ticket to Triage: ', res
 
 Checkouts.after.update (userId, doc, fieldNames, modifier, options) ->
   # Check if this is an update approving/rejecting a request. If so, send the appropriate email.

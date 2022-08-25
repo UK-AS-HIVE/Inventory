@@ -25,5 +25,9 @@
   },
   "apiKeys": {
     "dellWarranty": "d34db33f0694618aee900ba927da70db"
+  },
+  "triage": {
+    "url": "https://my-triage.net/",
+    "queueName": "Checkouts"
   }
 }
